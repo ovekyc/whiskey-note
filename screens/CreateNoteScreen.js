@@ -6,10 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { MonoText } from '../components/StyledText';
 
-export default function CreateNoteScreen({ route }) {
-  const navigation = useNavigation();
-  navigation.setOptions({ 
-    headerRight: (<Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />)
+export default function CreateNoteScreen({ navigation, route }) {
+  // navigation.setOptions({ 
+  //   headerRight: (<Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />)
+  // });
+  navigation.setOptions({
+    headerRight: () => (
+      <Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />
+    ),
   });
 
   return (
@@ -41,7 +45,7 @@ export default function CreateNoteScreen({ route }) {
       </ScrollView>
 
       <View style={styles.tabBarInfoContainer}>
-        <Button title='next' onPress={() => this.props.navigation.navigate('CreateNoteDetail', { data: this.data })} />
+        <Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />
       </View>
     </View>
   );

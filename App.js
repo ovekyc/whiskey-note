@@ -1,15 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 
 import useCachedResources from './hooks/useCachedResources';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
+import HomeNavigator from './navigation/HomeNavigator';
+import CreateNavigator from './navigation/CreateNavigator';
+import TabBarIcon from './components/TabBarIcon';
+import Note from './models/note';
 
-import CreateNoteDetailScreen from './screens/CreateNoteDetailScreen';
-
-const Stack = createStackNavigator();
+const BottomTab = createBottomTabNavigator();
+const INITIAL_ROUTE_NAME = 'Home';
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
@@ -21,14 +23,25 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
-            <Stack.Screen 
-              name="CreateNoteDetail"
-              component={CreateNoteDetailScreen}
-              options={({ route }) => ({ title: route.params.data.name })}
+          <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+            <BottomTab.Screen
+              name="Home"
+              component={HomeNavigator}
+              options={{
+                title: 'Get Started',
+                tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+              }}
             />
-          </Stack.Navigator>
+            <BottomTab.Screen
+              name="CreateNote"
+              component={CreateNavigator}
+              options={{
+                title: 'CreateNote',
+                tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+              }}
+              initialParams={{ data: new Note() }}
+            />
+          </BottomTab.Navigator>
         </NavigationContainer>
       </View>
     );
