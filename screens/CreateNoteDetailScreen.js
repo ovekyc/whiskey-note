@@ -1,53 +1,53 @@
-import * as WebBrowser from 'expo-web-browser';
 import React, { Component } from 'react';
-import { Image, Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
+import { Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
 
-import { MonoText } from '../components/StyledText';
+export default class CreateNoteDetailScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.data = props.route.params.data;
+    this.state = JSON.parse(JSON.stringify(this.data));
 
-export default function CreateNoteScreen({ route }) {
-  const navigation = useNavigation();
-  navigation.setOptions({ 
-    headerRight: (<Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />)
-  });
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={() => this.save} title="save"/>
+      ),
+    });
+  }
 
-  return (
-    <View style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
+  save() {
+
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <TextInput
+            style={{height: 40}}
+            placeholder="notes"
+            onChangeText={(changed) => { 
+              this.setState({notes: changed});
+              this.data.notes = changed;
+            }}
           />
-        </View>
 
-        {Object.keys(route.params.data.info).map(key => (
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>{key}</Text>
-            <TextInput
-              style={{height: 40}}
-              placeholder={key}
-              onChangeText={(changed) => { 
-                this.setState({key: changed});
-                route.params.data[key] = changed;
-              }}/>
+          <View>
+            <Text>Color</Text>
           </View>
-        ))}
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Button title='next' onPress={() => this.props.navigation.navigate('CreateNoteDetail', { data: this.data })} />
+          
+          {['aroma', 'plate'].map(key => (
+            <View style={styles.getStartedContainer}>
+              <Text style={styles.getStartedText}>{key}</Text>
+            </View>
+          ))}
+        </ScrollView>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
-CreateNoteScreen.navigationOptions = {
+CreateNoteDetailScreen.navigationOptions = {
   header: null,
 };
 

@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
+import { Button } from 'react-native';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import CreateNoteScreen from '../screens/CreateNoteScreen';
+import Note from '../models/note';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -13,7 +15,8 @@ export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
-  navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+  const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
+  navigation.setOptions({ headerTitle: getHeaderTitle(routeName) });
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
@@ -26,13 +29,14 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="CreateNoteNote"
+        name="CreateNote"
         component={CreateNoteScreen}
         options={{
           title: 'CreateNote',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
-      />
+        initialParams={{ data: new Note() }}
+      />      
       <BottomTab.Screen
         name="Links"
         component={LinksScreen}
@@ -45,12 +49,12 @@ export default function BottomTabNavigator({ navigation, route }) {
   );
 }
 
-function getHeaderTitle(route) {
-  const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
+function getHeaderTitle(routeName) {
   switch (routeName) {
     case 'Home':
       return 'How to get started';
+    case 'CreateNote':
+      return 'Create Note';
     case 'Links':
       return 'Links to learn more';
   }
