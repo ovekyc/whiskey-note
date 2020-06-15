@@ -13,3 +13,7 @@ export async function getNote(id) {
 export async function delNote(id) {
   await AsyncStorage.removeItem(id)
 }
+
+export async function getAllNotes(id) {
+  await AsyncStorage.getAllKeys()
+}

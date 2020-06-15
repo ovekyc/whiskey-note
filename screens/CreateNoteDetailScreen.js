@@ -7,7 +7,7 @@ export default function CreateNoteDetailScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
-      <Button onPress={() => { setNote(data); navigation.navigate('Home') }} title="save"/>
+      <Button onPress={() => { setNote(data).then((result) => {console.log(result); navigation.navigate('Home')}) }} title="save"/>
     )
   });
 
