@@ -1,50 +1,37 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { setNote } from '../dao/NoteDao';
 
-export default class CreateNoteDetailScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.data = props.route.params.data;
-    this.state = JSON.parse(JSON.stringify(this.data));
+export default function CreateNoteDetailScreen({ navigation, route }) {
+  const [data, setData] = useState(route.params.data);
+  navigation.setOptions({
+    headerRight: () => (
+      <Button onPress={() => { setNote(data); navigation.navigate('Home') }} title="save"/>
+    )
+  });
 
-    props.navigation.setOptions({
-      headerRight: () => (
-        <Button onPress={() => this.save} title="save"/>
-      ),
-    });
-  }
+  return (
+    <View style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <TextInput
+          style={{height: 40}}
+          placeholder="notes"
+          onChangeText={(changed) => { data.notes = changed; setData(data); }}
+        />
 
-  save() {
-
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <TextInput
-            style={{height: 40}}
-            placeholder="notes"
-            onChangeText={(changed) => { 
-              this.setState({notes: changed});
-              this.data.notes = changed;
-            }}
-          />
-
-          <View>
-            <Text>Color</Text>
+        <View>
+          <Text>Color</Text>
+        </View>
+        
+        {['aroma', 'plate'].map(key => (
+          <View key={key} style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>{key}</Text>
           </View>
-          
-          {['aroma', 'plate'].map(key => (
-            <View style={styles.getStartedContainer}>
-              <Text style={styles.getStartedText}>{key}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    );
-  }
+        ))}
+      </ScrollView>
+    </View>
+  );
 }
 
 CreateNoteDetailScreen.navigationOptions = {

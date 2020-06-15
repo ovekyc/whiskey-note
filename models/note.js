@@ -32,6 +32,15 @@ export default class Note {
     this.notes = '',
     this.totalScore = 0
   }
+
+  toJSON() {
+    const {id, info, color, aroma, palate, finish, notes, totalScore} = this;
+    return {
+      id, info, color, finish, notes, totalScore,
+      aroma: { data: aroma.data.toJSON(), rating: aroma.rating },
+      palate: { data: aroma.data.toJSON(), rating: palate.rating }
+    }
+  }
 }
 
 class Flavors {

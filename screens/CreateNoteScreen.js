@@ -1,18 +1,12 @@
-import * as WebBrowser from 'expo-web-browser';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Image, Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-
-import { MonoText } from '../components/StyledText';
 
 export default function CreateNoteScreen({ navigation, route }) {
-  // navigation.setOptions({ 
-  //   headerRight: (<Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />)
-  // });
+  const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
-      <Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />
+      <Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data })} />
     ),
   });
 
@@ -30,23 +24,19 @@ export default function CreateNoteScreen({ navigation, route }) {
           />
         </View>
 
-        {Object.keys(route.params.data.info).map(key => (
-          <View style={styles.getStartedContainer}>
+        {Object.keys(data.info).map(key => (
+          <View key={key} style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>{key}</Text>
             <TextInput
               style={{height: 40}}
               placeholder={key}
-              onChangeText={(changed) => { 
-                this.setState({key: changed});
-                route.params.data[key] = changed;
+              onChangeText={(changed) => {
+                data[key] = changed;
+                setData(data);
               }}/>
           </View>
         ))}
       </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data: route.params.data })} />
-      </View>
     </View>
   );
 }
