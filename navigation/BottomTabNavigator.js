@@ -24,7 +24,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Get Started',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
         }}
       />
@@ -32,19 +31,10 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="CreateNote"
         component={CreateNoteScreen}
         options={{
-          title: 'CreateNote',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
         initialParams={{ data: new Note() }}
       />      
-      <BottomTab.Screen
-        name="Links"
-        component={LinksScreen}
-        options={{
-          title: 'Resources',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-        }}
-      />
     </BottomTab.Navigator>
   );
 }
@@ -55,7 +45,5 @@ function getHeaderTitle(routeName) {
       return 'How to get started';
     case 'CreateNote':
       return 'Create Note';
-    case 'Links':
-      return 'Links to learn more';
   }
 }

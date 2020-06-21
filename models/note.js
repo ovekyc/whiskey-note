@@ -2,7 +2,7 @@ import uuid from 'react-native-uuid';
 
 export default class Note {
   constructor() {
-    this.id = uuid.v4();
+    this.id = `note-${uuid.v4()}`;
     this.info = {
       name: null,
       country: null,

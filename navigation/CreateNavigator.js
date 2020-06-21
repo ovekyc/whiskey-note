@@ -23,7 +23,7 @@ export default function CreateNavigator({ navigation, route }) {
         name="CreateNote"
         component={CreateNoteScreen}
         options={{
-          title: 'CreateNote',
+          title: 'Create Note',
         }}
         initialParams={{ data: new Note() }}
       />

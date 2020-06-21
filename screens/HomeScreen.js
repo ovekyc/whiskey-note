@@ -1,13 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { getAllNotes } from '../dao/NoteDao';
 
-export default function HomeScreen() {
-  getAllNotes().then(console.log)
-      
+export default function HomeScreen({ navigation, route }) {
+  const [notes, setNotes] = useState([]);
+  useEffect(() => {
+    getAllNotes().then(notes => setNotes(notes))
+  });
+  
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <OptionButton
@@ -28,6 +31,18 @@ export default function HomeScreen() {
         onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
         isLastOption
       />
+
+      {
+        notes.map(note => (
+          <OptionButton
+            key={note.id} 
+            icon="ios-chatboxes"
+            label={note.name}
+            onPress={() => navigation.navigate('ShowNote', { data: note })}
+            isLastOption
+          />
+        ))
+      }
     </ScrollView>
   );
 }
