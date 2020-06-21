@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { StackActions } from '@react-navigation/native';
 import { setNote } from '../dao/NoteDao';
+import Note from '../models/note';
 
 export default function CreateNoteDetailScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
-      <Button onPress={() => { setNote(data).then((result) => {console.log(result); navigation.navigate('Home')}) }} title="save"/>
+      <Button title="save" onPress={() => { 
+        setNote(data)
+          .then(() => {
+            navigation.dispatch(StackActions.replace("CreateNote", { data: new Note() }));
+            navigation.dispatch(StackActions.popToTop());
+            navigation.navigate('Home');
+          })
+        }}
+      />
     )
   });
 

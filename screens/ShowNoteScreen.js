@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { StackActions } from '@react-navigation/native';
 import { delNote } from '../dao/NoteDao';
 
 export default function ShowNoteScreen({ navigation, route }) {
@@ -34,7 +35,7 @@ export default function ShowNoteScreen({ navigation, route }) {
         ))}
 
         <Button title='delete' onPress={() => {
-          delNote(data.id).then(() => navigation.navigate('Home'))
+          delNote(data.id).then(() => navigation.dispatch(StackActions.popToTop()))
         }}/>
       </ScrollView>
     </View>
