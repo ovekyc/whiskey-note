@@ -7,8 +7,9 @@ export default function CreateNoteDetailScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
-      <Button onPress={() => { setNote(data).then((result) => {console.log(result); navigation.navigate('Home')}) }} title="save"/>
-    )
+      <Button onPress={() => { setNote(data).then((result) => navigation.navigate('Home')) }} title="save"/>
+    ),
+    title: data.info.name ? data.info.name : "NO NAME"
   });
 
   return (
@@ -70,9 +71,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 50,
     alignItems:'center', 
     justifyContent:'center'
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
   },
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',

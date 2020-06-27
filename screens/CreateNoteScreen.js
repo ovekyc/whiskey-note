@@ -31,7 +31,7 @@ export default function CreateNoteScreen({ navigation, route }) {
               style={{height: 40}}
               placeholder={key}
               onChangeText={(changed) => {
-                data[key] = changed;
+                data.info[key] = changed;
                 setData(data);
               }}/>
           </View>
@@ -77,9 +77,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 50,
     alignItems:'center', 
     justifyContent:'center'
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
   },
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',

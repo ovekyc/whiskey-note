@@ -1,11 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import { Button } from 'react-native';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import CreateNoteScreen from '../screens/CreateNoteScreen';
+import HomeNavigator from '../navigation/HomeNavigator';
+import CreateNavigator from '../navigation/CreateNavigator';
 import Note from '../models/note';
 
 const BottomTab = createBottomTabNavigator();
@@ -20,20 +18,17 @@ export default function BottomTabNavigator({ navigation, route }) {
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-      <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
+      <BottomTab.Navigator
+        component={HomeNavigator}
         options={{
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
         }}
       />
-      <BottomTab.Screen
-        name="CreateNote"
-        component={CreateNoteScreen}
+      <BottomTab.Navigator
+        component={CreateNavigator}
         options={{
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
-        initialParams={{ data: new Note() }}
       />      
     </BottomTab.Navigator>
   );
