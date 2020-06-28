@@ -16,13 +16,16 @@ export default function ShowNoteScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <View key="infomation-view" style={styles.informationContainer}>
+          {Object.keys(data.info).filter(key => key !== "name").map(key => (
+            <View key={key} style={styles.informationItem}>
+              <Text style={styles.getStartedText}>{key}</Text>
+              <Text style={styles.getStartedText}>{data.info[key]}</Text>
+            </View>
+          ))}
+        </View>
 
-        {Object.keys(data.info).map(key => (
-          <View key={key} style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>{key}</Text>
-            <Text style={{height: 40}}>{data.info[key]}</Text>
-          </View>
-        ))}
+        
 
         <Button title='delete' onPress={() => {
           delNote(data.id).then(() => navigation.dispatch(StackActions.popToTop()))
@@ -62,6 +65,18 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
+  },
+  informationContainer: {
+    flexDirection: 'col',
+    marginHorizontal: 50,
+    alignItems:'center', 
+    justifyContent:'center'
+  },
+  informationItem: {
+    flexDirection: 'col',
+    marginHorizontal: 50,
+    alignItems:'center', 
+    justifyContent:'center'
   },
   getStartedContainer: {
     flexDirection: 'row',

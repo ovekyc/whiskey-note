@@ -43,6 +43,7 @@ export default function CreateNoteDetailScreen({ navigation, route }) {
     </View>
   );
 }
+  
 
 CreateNoteDetailScreen.navigationOptions = {
   header: null,
