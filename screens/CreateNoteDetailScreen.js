@@ -81,9 +81,6 @@ const styles = StyleSheet.create({
     alignItems:'center', 
     justifyContent:'center'
   },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',
   },

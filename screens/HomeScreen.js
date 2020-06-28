@@ -33,13 +33,13 @@ export default function HomeScreen({ navigation, route }) {
       />
 
       {
-        notes.map(note => (
+        notes.map((note, i) => (
           <OptionButton
             key={note.id} 
             icon="ios-chatboxes"
-            label={note.name}
+            label={note.info.name}
             onPress={() => navigation.navigate('ShowNote', { data: note })}
-            isLastOption
+            isLastOption={i === notes.length - 1}
           />
         ))
       }

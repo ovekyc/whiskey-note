@@ -6,31 +6,21 @@ import { delNote } from '../dao/NoteDao';
 
 export default function ShowNoteScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
+  navigation.setOptions({
+    headerRight: () => (
+      <Button title="edit" onPress={() => { navigation.navigate('Home') }}/>
+    ),
+    title: data.info.name ? data.info.name : "NO NAME"
+  });
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
 
         {Object.keys(data.info).map(key => (
           <View key={key} style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>{key}</Text>
-            <TextInput
-              style={{height: 40}}
-              placeholder={key}
-              onChangeText={(changed) => {
-                data[key] = changed;
-                setData(data);
-              }}/>
+            <Text style={{height: 40}}>{data.info[key]}</Text>
           </View>
         ))}
 
@@ -78,9 +68,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 50,
     alignItems:'center', 
     justifyContent:'center'
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
   },
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',
