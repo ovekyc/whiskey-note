@@ -17,6 +17,7 @@ export default function HomeNavigator({ navigation, route }) {
           title: 'Get Started',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
         }}
+        initialParams={{ notes: [] }}
       />
       <Stack.Screen
         name="ShowNote"

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { StackActions } from '@react-navigation/native';
 import { Image, Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StackActions } from '@react-navigation/native';
 import { delNote } from '../dao/NoteDao';
 
 export default function ShowNoteScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
-      <Button title="edit" onPress={() => { navigation.navigate('Home') }}/>
+      <Button title="edit" onPress={() => { 
+        navigation.dispatch(StackActions.replace('Home', {})); 
+        navigation.dispatch(StackActions.popToTop()); 
+      }}/>
     ),
     title: data.info.name ? data.info.name : "NO NAME"
   });
@@ -28,7 +31,10 @@ export default function ShowNoteScreen({ navigation, route }) {
         
 
         <Button title='delete' onPress={() => {
-          delNote(data.id).then(() => navigation.dispatch(StackActions.popToTop()))
+          delNote(data.id).then(() => {
+            navigation.dispatch(StackActions.popToTop('Home'));
+            navigation.dispatch(StackActions.replace('Home', { notes: [] }));
+          })
         }}/>
       </ScrollView>
     </View>

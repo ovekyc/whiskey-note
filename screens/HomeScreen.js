@@ -3,10 +3,11 @@ import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StackActions } from '@react-navigation/native';
 import { getAllNotes } from '../dao/NoteDao';
 
 export default function HomeScreen({ navigation, route }) {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(route.params.notes);
   useEffect(() => {
     getAllNotes().then(notes => setNotes(notes))
   });
@@ -38,7 +39,7 @@ export default function HomeScreen({ navigation, route }) {
             key={note.id} 
             icon="ios-chatboxes"
             label={note.info.name}
-            onPress={() => navigation.navigate('ShowNote', { data: note })}
+            onPress={() => navigation.dispatch(StackActions.push('ShowNote', { data: note }))}
             isLastOption={i === notes.length - 1}
           />
         ))

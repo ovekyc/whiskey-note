@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { StackActions } from '@react-navigation/native';
 import { Image, Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -6,7 +7,7 @@ export default function CreateNoteScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
-      <Button title='next' onPress={() => navigation.navigate('CreateNoteDetail', { data })} />
+      <Button title='next' onPress={() => navigation.dispatch(StackActions.push('CreateNoteDetail', { data }))} />
     ),
   });
 
