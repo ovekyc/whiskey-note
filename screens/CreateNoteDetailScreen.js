@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StackActions } from '@react-navigation/native';
 import { Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
 import { setNote } from '../dao/NoteDao';
-import Note from '../models/note';
+import Note from '../models/Note';
 
 export default function CreateNoteDetailScreen({ navigation, route }) {
   const [data, setData] = useState(route.params.data);
@@ -40,7 +41,6 @@ export default function CreateNoteDetailScreen({ navigation, route }) {
     </View>
   );
 }
-  
 
 CreateNoteDetailScreen.navigationOptions = {
   header: null,

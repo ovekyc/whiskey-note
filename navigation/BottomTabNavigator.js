@@ -4,7 +4,7 @@ import * as React from 'react';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeNavigator from '../navigation/HomeNavigator';
 import CreateNavigator from '../navigation/CreateNavigator';
-import Note from '../models/note';
+import Note from '../models/Note';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';

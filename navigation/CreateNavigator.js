@@ -1,11 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button } from 'react-native';
-
-import TabBarIcon from '../components/TabBarIcon';
 import CreateNoteScreen from '../screens/CreateNoteScreen';
 import CreateNoteDetailScreen from '../screens/CreateNoteDetailScreen';
-import Note from '../models/note';
+import Note from '../models/Note';
 
 const Stack = createStackNavigator();
 const INITIAL_ROUTE_NAME = 'Create';

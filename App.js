@@ -8,7 +8,7 @@ import LinkingConfiguration from './navigation/LinkingConfiguration';
 import HomeNavigator from './navigation/HomeNavigator';
 import CreateNavigator from './navigation/CreateNavigator';
 import TabBarIcon from './components/TabBarIcon';
-import Note from './models/note';
+import Note from './models/Note';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';

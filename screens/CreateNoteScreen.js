@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { StackActions } from '@react-navigation/native';
 import { Image, Platform, StyleSheet, Text, Button, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import CircleChart from '../components/CircleChart';
 
 export default function CreateNoteScreen({ navigation, route }) {
+  // Data
   const [data, setData] = useState(route.params.data);
   navigation.setOptions({
     headerRight: () => (
@@ -37,6 +39,8 @@ export default function CreateNoteScreen({ navigation, route }) {
               }}/>
           </View>
         ))}
+
+        <CircleChart />
       </ScrollView>
     </View>
   );
