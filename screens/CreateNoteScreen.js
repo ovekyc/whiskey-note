@@ -40,7 +40,7 @@ export default function CreateNoteScreen({ navigation, route }) {
           </View>
         ))}
 
-        <CircleChart />
+        <CircleChart data={data.aroma.data}/>
       </ScrollView>
     </View>
   );

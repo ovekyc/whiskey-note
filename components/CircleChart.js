@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { VictoryChart, VictoryBar, VictoryStack, VictoryLabel, VictoryPolarAxis, VictoryTheme } from 'victory';
+import { MAX_SCORE } from '../models/Note';
 
-const directions = {
-  0: "E", 45: "NE", 90: "N", 135: "NW",
-  180: "W", 225: "SW", 270: "S", 315: "SE"
-};
 const orange = { base: "gold", highlight: "darkOrange" };
 const red = { base: "tomato", highlight: "orangeRed" };
 const innerRadius = 30;
@@ -24,7 +21,7 @@ function CompassCenter(props) {
 
 function CenterLabel(props) {
   const { datum, active, color } = props;
-  const text = [ `${directions[datum._x]}`, `${Math.round(datum._y1)} mph` ];
+  const text = [ `${datum.xName}`, `${Math.round(datum._y1)}` ];
   const baseStyle = { fill: color.highlight, textAnchor: "middle" };
   const style = [
     { ...baseStyle, fontSize: 18, fontWeight: "bold" },
@@ -37,7 +34,9 @@ function CenterLabel(props) {
 }
 
 export default function CircleChart(props) {
-  const [wind, setWind] = useState(getWindData(directions));
+  const jsonData = props.data.toJSON();
+  const [flavors, setFlators] = useState(getFlavors(jsonData));
+  const angles = getAngles(jsonData);
 
   return (
     <VictoryChart
@@ -66,13 +65,13 @@ export default function CircleChart(props) {
       }]}
     >
       <VictoryPolarAxis dependentAxis labelPlacement="vertical" style={{ axis: { stroke: "none" } }} tickFormat={() => ""} />
-      <VictoryPolarAxis labelPlacement="parallel" tickValues={Object.keys(directions).map((k) => +k)} tickFormat={Object.values(directions)} />
+      <VictoryPolarAxis labelPlacement="parallel" tickValues={Object.keys(angles).map((k) => +k)} tickFormat={Object.values(angles)} />
       <VictoryStack>
         <VictoryBar
           style={{ data: { fill: ({ active }) => active ? orange.highlight : orange.base, width: 40 } }}
-          data={wind}
-          x="windBearing"
-          y="windSpeed"
+          data={flavors}
+          x="label"
+          y="score"
           labels={() => ""}
           labelComponent={<CenterLabel color={orange}/>}
         />
@@ -81,9 +80,9 @@ export default function CircleChart(props) {
             fill: (d, a) => a ? red.highlight : red.base,
             width: 40
           } }}
-          data={wind}
-          x="windBearing"
-          y={(d) => d.windGust - d.windSpeed}
+          data={flavors}
+          x="label"
+          y={(d) => MAX_SCORE - d.score}
           labels={() => ""}
           labelComponent={<CenterLabel color={red}/>}
         />
@@ -93,13 +92,15 @@ export default function CircleChart(props) {
   );
 }
 
-function getWindData(labels) {
-  return Object.keys(labels).map((label) => {
-    const speed = Math.floor(Math.random() * 17) + 4;
-    return {
-      windSpeed: speed,
-      windGust: speed + Math.random(2, 10),
-      windBearing: label
-    };
-  });
+function getFlavors(flavors) {
+  const flavorsArray = [];
+  Object.keys(flavors).forEach((label) => flavorsArray.push({ label, score: flavors[label] }));
+  return flavorsArray;
+}
+
+function getAngles(flavors) {
+  const angleOffset = 360 / (Object.keys(flavors).length);
+  const angles = {};
+  Object.keys(flavors).map((label, i) => angles[i * angleOffset] = label);
+  return angles;
 }
