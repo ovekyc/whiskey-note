@@ -20,7 +20,7 @@ function CompassCenter(props) {
 }
 
 function CenterLabel(props) {
-  const { datum, clicked, color } = props;
+  const { datum, active, color } = props;
   const text = [ `${datum.xName}`, `${Math.round(datum._y1)}` ];
   const baseStyle = { fill: color.highlight, textAnchor: "middle" };
   const style = [
@@ -28,13 +28,13 @@ function CenterLabel(props) {
     { ...baseStyle, fontSize: 12 }
   ];
 
-  return clicked
+  return active
     ? (<VictoryLabel text={text} style={style} x={175} y={175} renderInPortal/>)
     : null;
 }
 
 export default function CircleChart(props) {
-  const flavors = props.data;
+  const [flavors, setFlavors] = useState(props.data);
   const angles = getAngles(flavors);
 
   return (
@@ -48,10 +48,19 @@ export default function CircleChart(props) {
         childName: "all",
         target: "data",
         eventHandlers: {
+          onMouseOver: () => [{ target: "labels", mutation: () => ({ active: true }) }],
+          onMouseOut: () => [{ target: "labels", mutation: () => ({ active: false }) }],
           onClick: (evt) => {
             return [
-              { target: "labels", mutation: () => ({ clicked: true }) },
-              { target: "data", mutation: () => ({ clicked: true }) }
+              { target: "labels", mutation: (props) => {
+                const label = props.datum.xName;
+                const value = props.datum._y1;
+                console.log(flavors);
+                setFlavors({
+                  ...flavors,
+                  [label]: value
+                });
+              }}
             ]
           }
         }
@@ -60,27 +69,17 @@ export default function CircleChart(props) {
       <VictoryPolarAxis dependentAxis labelPlacement="vertical" style={{ axis: { stroke: "none" } }} tickFormat={() => ""} />
       <VictoryPolarAxis labelPlacement="parallel" tickValues={Object.keys(angles).map((k) => +k)} tickFormat={Object.values(angles)} />
       <VictoryStack>
-        {
-          getInnerScoreBars().map((_, i) => {
-            const data = convertFlavorsToStackChartData(flavors);
-
-            return (
-              <VictoryBar
-                style={{ data: {
-                  fill: (d, a) => d._y1 <= flavors.score ? red.highlight : red.base,
-                  width: 40
-                } }}
-                data={data}
-                x="label"
-                y={(d) => {
-                  const label = d.xName;
-                  return i < flavors[label] ? 1 : 0;
-                }}
-                labels={() => ""}
-                labelComponent={<CenterLabel color={red}/>}
-              />);
-          })
-        }
+        <VictoryBar
+          style={{ data: {
+            fill: (d, a) => d._y1 <= flavors.score ? red.highlight : red.base,
+            width: 40
+          } }}
+          data={convertFlavorsToStackChartData(flavors)}
+          x="label"
+          y="score"
+          labels={() => ""}
+          labelComponent={<CenterLabel color={red}/>}
+        />
       </VictoryStack>
       <CompassCenter/>
     </VictoryChart>
@@ -88,8 +87,10 @@ export default function CircleChart(props) {
 }
 
 function convertFlavorsToStackChartData(flavors) {
-  return Object.keys(flavors)
-      .map((label) => ({ label, score: flavors[label] }));
+  const result = Object.keys(flavors)
+      .map((label) => ({ label, score: getRandomInt(0,5)/*flavors[label]*/ }));
+  console.log(result);
+  return result;
 }
 
 function getAngles(flavors) {
@@ -99,9 +100,8 @@ function getAngles(flavors) {
   return angles;
 }
 
-function getInnerScoreBars() {
-  const arr = [];
-  arr.length = 5;
-  arr.fill(1);
-  return arr
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
