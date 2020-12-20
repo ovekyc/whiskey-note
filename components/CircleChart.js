@@ -50,19 +50,12 @@ export default function CircleChart(props) {
         eventHandlers: {
           onMouseOver: () => [{ target: "labels", mutation: () => ({ active: true }) }],
           onMouseOut: () => [{ target: "labels", mutation: () => ({ active: false }) }],
-          onClick: (evt) => {
-            return [
-              { target: "labels", mutation: (props) => {
-                const label = props.datum.xName;
-                const value = props.datum._y1;
-                console.log(flavors);
-                setFlavors({
-                  ...flavors,
-                  [label]: value
-                });
-              }}
-            ]
-          }
+          onClick: () => [{ target: "labels", mutation: (props) => {
+              const label = props.datum.xName;
+              const value = props.datum._y1;
+              setFlavors({ ...flavors, [label]: value});
+            }}
+          ]
         }
       }]}
     >
@@ -87,10 +80,8 @@ export default function CircleChart(props) {
 }
 
 function convertFlavorsToStackChartData(flavors) {
-  const result = Object.keys(flavors)
-      .map((label) => ({ label, score: getRandomInt(0,5)/*flavors[label]*/ }));
-  console.log(result);
-  return result;
+  return Object.keys(flavors)
+      .map((label) => ({ label, score: getRandomInt(0, MAX_SCORE)/*flavors[label]*/ }));
 }
 
 function getAngles(flavors) {

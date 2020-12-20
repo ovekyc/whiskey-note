@@ -43,7 +43,7 @@ export default class Note {
   }
 }
 
-export const MAX_SCORE = 10;
+export const MAX_SCORE = 5;
 export class Flavors {
   constructor() {
     this.woody = 0,
