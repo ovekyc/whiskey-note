@@ -52,7 +52,7 @@ export default function CircleChart(props) {
           onMouseOut: () => [{ target: "labels", mutation: () => ({ active: false }) }],
           onClick: () => [{ target: "labels", mutation: (props) => {
               const label = props.datum.xName;
-              const value = props.datum._y1;
+              const value = props.datum._stack;
               setFlavors({ ...flavors, [label]: value});
             }}
           ]
@@ -62,17 +62,25 @@ export default function CircleChart(props) {
       <VictoryPolarAxis dependentAxis labelPlacement="vertical" style={{ axis: { stroke: "none" } }} tickFormat={() => ""} />
       <VictoryPolarAxis labelPlacement="parallel" tickValues={Object.keys(angles).map((k) => +k)} tickFormat={Object.values(angles)} />
       <VictoryStack>
-        <VictoryBar
-          style={{ data: {
-            fill: (d, a) => d._y1 <= flavors.score ? red.highlight : red.base,
-            width: 40
-          } }}
-          data={convertFlavorsToStackChartData(flavors)}
-          x="label"
-          y="score"
-          labels={() => ""}
-          labelComponent={<CenterLabel color={red}/>}
-        />
+        {
+          Array(MAX_SCORE + 1).fill().map((_, index) => ( // Max score + 1 because of 0 score
+            <VictoryBar
+              style={{ data: {
+                fill: (props) => {
+                  const label = props.datum.label;
+                  const score = flavors[label];
+                  return index <= score ? red.highlight : orange.base
+                },
+                width: 40
+              } }}
+              data={convertFlavorsToStackChartData(flavors)}
+              x="label"
+              y="score"
+              labels={() => ""}
+              labelComponent={<CenterLabel color={red}/>}
+            />
+          ))
+        }
       </VictoryStack>
       <CompassCenter/>
     </VictoryChart>
@@ -81,7 +89,7 @@ export default function CircleChart(props) {
 
 function convertFlavorsToStackChartData(flavors) {
   return Object.keys(flavors)
-      .map((label) => ({ label, score: getRandomInt(0, MAX_SCORE)/*flavors[label]*/ }));
+    .map((label) => ({ label, score: 1 }));
 }
 
 function getAngles(flavors) {
