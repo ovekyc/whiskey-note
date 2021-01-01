@@ -21,7 +21,7 @@ function CompassCenter(props) {
 
 function CenterLabel(props) {
   const { datum, active, color } = props;
-  const text = [ `${datum.xName}`, `${Math.round(datum._y1)}` ];
+  const text = [ `${datum.xName}`, `${Math.round(datum._y1) - 1}` ];
   const baseStyle = { fill: color.highlight, textAnchor: "middle" };
   const style = [
     { ...baseStyle, fontSize: 18, fontWeight: "bold" },
@@ -52,7 +52,7 @@ export default function CircleChart(props) {
           onMouseOut: () => [{ target: "labels", mutation: () => ({ active: false }) }],
           onClick: () => [{ target: "labels", mutation: (props) => {
               const label = props.datum.xName;
-              const value = props.datum._stack;
+              const value = props.datum._stack - 1;
               setFlavors({ ...flavors, [label]: value});
             }}
           ]
